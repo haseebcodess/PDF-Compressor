@@ -1,0 +1,1018 @@
+/* Compresso — pure black & white theme system
+   Light mode = white background, black text
+   Dark mode  = black background, white text
+   No colours, no gradients, no shades in between */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+
+/* reset — zero out default browser spacing and sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+/* ── LIGHT THEME ────────────────────────────────────────────────────────────
+   pure white surfaces, pure black text, black borders and accents */
+
+:root,
+[data-theme="light"] {
+
+  --bg:         #ffffff;
+  --surface:    #ffffff;
+  --surface-2:  #ffffff;
+
+  --border:     #000000;
+  --border-2:   #000000;
+
+  --text:       #000000;
+  --text-2:     #000000;
+  --text-3:     #000000;
+
+  --accent:     #000000;
+  --accent-h:   #333333;
+
+  --hero-bg:    #000000;
+  --hero-text:  #ffffff;
+
+  --badge-bg:   #000000;
+  --badge-text: #ffffff;
+
+  --green:      #000000;
+  --green-bg:   #ffffff;
+
+  --red:        #000000;
+  --red-bg:     #ffffff;
+
+  --prog-track: #e0e0e0;
+  --prog-fill:  #000000;
+
+  --shadow:     0 2px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg:  0 4px 32px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ── DARK THEME ─────────────────────────────────────────────────────────────
+   pure black surfaces, pure white text, white borders and accents */
+
+[data-theme="dark"] {
+
+  --bg:         #000000;
+  --surface:    #000000;
+  --surface-2:  #000000;
+
+  --border:     #ffffff;
+  --border-2:   #ffffff;
+
+  --text:       #ffffff;
+  --text-2:     #ffffff;
+  --text-3:     #ffffff;
+
+  --accent:     #ffffff;
+  --accent-h:   #cccccc;
+
+  --hero-bg:    #ffffff;
+  --hero-text:  #000000;
+
+  --badge-bg:   #ffffff;
+  --badge-text: #000000;
+
+  --green:      #ffffff;
+  --green-bg:   #000000;
+
+  --red:        #ffffff;
+  --red-bg:     #000000;
+
+  --prog-track: #333333;
+  --prog-fill:  #ffffff;
+
+  --shadow:     0 2px 16px rgba(255, 255, 255, 0.08);
+  --shadow-lg:  0 4px 32px rgba(255, 255, 255, 0.10);
+}
+
+
+/* ── APP WRAPPER ────────────────────────────────────────────────────────────
+   full page flex column so footer stays at the bottom */
+
+.app {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.2s, color 0.2s;
+}
+
+
+/* ── HEADER ─────────────────────────────────────────────────────────────────
+   sticky top bar with logo, nav tag, and theme toggle */
+
+.header {
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--text);
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.logo-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.logo-wordmark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  transition: color 0.2s;
+}
+
+.header-nav {
+  flex: 1;
+}
+
+.nav-tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  padding: 7px 14px 7px 11px;
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  opacity: 0.8;
+}
+
+.theme-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* ── HERO BAND ──────────────────────────────────────────────────────────────
+   big black (or white in dark mode) banner at the top of the upload screen */
+
+.hero-band {
+  background: var(--hero-bg);
+  padding: 56px 24px 60px;
+  transition: background 0.2s;
+}
+
+.hero-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hero-text);
+  margin-bottom: 10px;
+  opacity: 0.6;
+}
+
+.hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--hero-text);
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--hero-text);
+  opacity: 0.75;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.hero-right {
+  flex-shrink: 0;
+}
+
+.hero-illustration {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.ill-doc {
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+  border: 2px solid var(--hero-text);
+  opacity: 0.25;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.ill-line {
+  height: 8px;
+  background: var(--hero-text);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+.ill-line.short {
+  width: 60%;
+}
+
+.ill-front {
+  opacity: 0.5;
+}
+
+.ill-badge {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  background: var(--hero-text);
+  color: var(--hero-bg);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 4px 7px;
+  border-radius: 20px;
+}
+
+.ill-arrow {
+  font-size: 1.5rem;
+  color: var(--hero-text);
+  opacity: 0.4;
+}
+
+
+/* ── MAIN ───────────────────────────────────────────────────────────────────
+   the card area — overlaps the hero slightly on upload screen */
+
+.main {
+  flex: 1;
+  max-width: 780px;
+  width: 100%;
+  margin: -28px auto 48px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.main:not(:has(.drop-zone)) {
+  margin-top: 48px;
+}
+
+
+/* ── CARD ───────────────────────────────────────────────────────────────────
+   the white box that holds each view */
+
+.card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+  padding: 36px 40px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.animate-in {
+  animation: fade-up 0.3s ease both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ── DROP ZONE ──────────────────────────────────────────────────────────────
+   the big dashed rectangle on the upload screen */
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 56px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.drop-zone:hover {
+  background: var(--surface-2);
+  border-style: solid;
+}
+
+.drop-zone.dz-active {
+  border-style: solid;
+  transform: scale(1.01);
+}
+
+.drop-zone.dz-loading {
+  pointer-events: none;
+}
+
+.dz-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dz-upload-icon {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.dz-upload-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dz-primary {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.dz-or {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  opacity: 0.5;
+}
+
+.dz-hint {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  opacity: 0.5;
+}
+
+.btn-select {
+  background: var(--accent);
+  color: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 11px 30px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-select:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+
+/* ── ERROR BAR ──────────────────────────────────────────────────────────────
+   shown below the drop zone or options when something goes wrong */
+
+.error-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 16px;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: var(--red);
+}
+
+.err-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+
+/* ── FILE ROW ───────────────────────────────────────────────────────────────
+   shows the uploaded file name and size on the options screen */
+
+.card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 22px;
+  color: var(--text);
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: var(--surface-2);
+  margin-bottom: 28px;
+}
+
+.file-row-pdf {
+  width: 28px;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.file-row-pdf svg {
+  width: 28px;
+  height: 35px;
+  display: block;
+}
+
+.file-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.file-row-name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+}
+
+.file-row-meta {
+  font-size: 0.76rem;
+  color: var(--text-3);
+  opacity: 0.6;
+}
+
+.section-label {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-2);
+  margin-bottom: 14px;
+}
+
+
+/* ── LEVEL CARDS ────────────────────────────────────────────────────────────
+   the 3 compression option boxes */
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.level-card {
+  position: relative;
+  display: block;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px 16px;
+  cursor: pointer;
+  background: var(--surface);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.level-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.level-card.lc-selected {
+  background: var(--accent);
+}
+
+.level-card.lc-selected .lc-name,
+.level-card.lc-selected .lc-desc,
+.level-card.lc-selected .lc-est {
+  color: var(--surface);
+}
+
+/* badge — "Best compression" pill on the High card */
+.lc-badge {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  transform: translateY(-50%);
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 3px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.level-card.lc-selected .lc-badge {
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.lc-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+/* the circular radio indicator */
+.radio-ring {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.radio-ring.rr-checked {
+  background: var(--surface);
+  border-color: var(--surface);
+  box-shadow: inset 0 0 0 3px var(--accent);
+}
+
+.level-card:not(.lc-selected) .radio-ring.rr-checked {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+
+.lc-name  { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.lc-desc  { font-size: 0.78rem; color: var(--text-2); line-height: 1.45; margin-bottom: 9px; }
+.lc-est   { font-size: 0.76rem; color: var(--text-3); opacity: 0.6; }
+
+
+/* ── CARD ACTIONS ───────────────────────────────────────────────────────────
+   the Cancel and Compress buttons at the bottom of the options card */
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: opacity 0.2s;
+}
+
+.btn-ghost:hover {
+  opacity: 0.6;
+}
+
+.btn-ghost.sm {
+  padding: 8px 18px;
+  font-size: 0.82rem;
+}
+
+.btn-ghost.wide {
+  width: 100%;
+  text-align: center;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--surface);
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+
+/* ── COMPRESSING CARD ───────────────────────────────────────────────────────
+   the loading screen shown while ghostscript runs */
+
+.compressing-card {
+  text-align: center;
+  padding: 56px 40px;
+}
+
+.compress-logo {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  color: var(--text);
+}
+
+.compress-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.compress-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.compress-sub {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  opacity: 0.7;
+  margin-bottom: 28px;
+}
+
+/* the progress bar track (grey/dark background) */
+.prog-track {
+  height: 6px;
+  background: var(--prog-track);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* the fill bar inside — width driven by progress state */
+.prog-fill {
+  height: 100%;
+  background: var(--prog-fill);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+.prog-label {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+
+/* ── RESULT CARD ────────────────────────────────────────────────────────────
+   shown after compression finishes */
+
+.result-card {
+  text-align: center;
+}
+
+.result-check {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  color: var(--green);
+}
+
+.result-check svg {
+  width: 28px;
+  height: 28px;
+}
+
+.result-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.result-sub {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.accent-text {
+  color: var(--green);
+  font-weight: 600;
+}
+
+
+/* size comparison boxes */
+
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.size-box {
+  flex: 1;
+}
+
+.sb-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--text-3);
+  opacity: 0.5;
+  margin-bottom: 7px;
+}
+
+.sb-value {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.sb-value.green {
+  color: var(--green);
+}
+
+.sb-bar {
+  height: 5px;
+  background: var(--prog-track);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.sb-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sb-fill.orig {
+  background: var(--text-3);
+  opacity: 0.4;
+}
+
+.sb-fill.comp {
+  background: var(--text);
+}
+
+.size-arrow {
+  flex-shrink: 0;
+  color: var(--text-3);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  opacity: 0.4;
+}
+
+.size-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+.result-filename {
+  font-size: 0.8rem;
+  color: var(--text-3);
+  opacity: 0.5;
+  margin-bottom: 22px;
+}
+
+/* the big download button */
+.btn-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 28px;
+  background: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--surface);
+  transition: opacity 0.2s, transform 0.15s;
+  margin-bottom: 12px;
+}
+
+.btn-download:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+.dl-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.dl-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ttl-note {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  opacity: 0.4;
+  margin-top: 14px;
+}
+
+
+/* ── SPINNER ────────────────────────────────────────────────────────────────
+   rotating circle shown during file upload */
+
+.spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: var(--prog-track);
+  border-top-color: var(--text);
+  animation: spin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+.spinner.lg {
+  width: 38px;
+  height: 38px;
+  border-width: 3px;
+}
+
+.spinner.sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ── SR-ONLY ────────────────────────────────────────────────────────────────
+   hides elements visually but keeps them accessible to screen readers */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ── FOOTER ─────────────────────────────────────────────────────────────────
+   small text at the very bottom */
+
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 0.73rem;
+  color: var(--text-3);
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────────────
+   adjustments for smaller screens */
+
+@media (max-width: 640px) {
+
+  .hero-right    { display: none; }
+  .hero-title    { font-size: 2rem; }
+
+  .card          { padding: 24px 20px; }
+
+  .levels-grid   { grid-template-columns: 1fr; }
+
+  .size-row      { flex-direction: column; text-align: center; }
+  .size-arrow    { transform: rotate(90deg); }
+
+  .card-actions  { flex-direction: column-reverse; gap: 10px; }
+  .btn-ghost, .btn-primary { width: 100%; text-align: center; justify-content: center; }
+
+  .header-inner  { padding: 0 14px; }
+  .nav-tag       { display: none; }
+  .theme-label   { display: none; }
+  .theme-toggle  { padding: 7px 10px; }
+
+  .main          { padding: 0 16px; }
+
+}
+
+@media (max-width: 400px) {
+  .hero-band  { padding: 36px 16px 44px; }
+  .hero-title { font-size: 1.7rem; }
+}
