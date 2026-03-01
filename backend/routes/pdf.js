@@ -1,9 +1,4 @@
-/**
- * routes/pdf.js
- * POST /api/pdf/upload     — upload a PDF
- * POST /api/pdf/compress   — compress with Ghostscript
- * GET  /api/pdf/download/:token — download compressed file
- */
+
 const express    = require('express');
 const router     = express.Router();
 const path       = require('path');
@@ -15,17 +10,19 @@ const upload     = require('../middleware/upload');
 const uploadsDir    = path.join(__dirname, '..', 'uploads');
 const compressedDir = path.join(__dirname, '..', 'compressed');
 
-// Ghostscript quality presets
+
 const GS_SETTINGS = {
-  low:    '/printer',   // ~300dpi  — high quality
-  medium: '/ebook',     // ~150dpi  — balanced
-  high:   '/screen'     // ~72dpi   — maximum compression
+  low:    '/printer',   
+  medium: '/ebook',     
+  high:   '/screen'     
 };
 
-// In-memory store  {fileId → fileInfo}
+
+
+// file uploading
 const fileStore = new Map();
 
-/* ── UPLOAD ──────────────────────────────────────────────────────────────── */
+
 router.post('/upload', upload.single('pdf'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded or invalid file type.' });
 
@@ -42,7 +39,9 @@ router.post('/upload', upload.single('pdf'), (req, res) => {
   res.json({ success: true, fileId, originalName: req.file.originalname, originalSize: req.file.size });
 });
 
-/* ── COMPRESS ────────────────────────────────────────────────────────────── */
+
+
+// compressed data
 router.post('/compress', async (req, res) => {
   const { fileId, level } = req.body;
 
@@ -58,7 +57,10 @@ router.post('/compress', async (req, res) => {
   const outName  = `${fileId}-${level}.pdf`;
   const outPath  = path.join(compressedDir, outName);
 
-  // On Windows use 'gswin64c', on Mac/Linux use 'gs'
+
+
+
+  // ghostscript used
   const gsCmd  = process.platform === 'win32' ? 'gswin64c' : 'gs';
   const gsArgs = [
     '-sDEVICE=pdfwrite',
@@ -90,7 +92,9 @@ router.post('/compress', async (req, res) => {
   }
 });
 
-/* ── DOWNLOAD ────────────────────────────────────────────────────────────── */
+
+
+// downloading the file
 router.get('/download/:token', (req, res) => {
   const { token } = req.params;
   const sep = token.lastIndexOf('__');
@@ -105,10 +109,13 @@ router.get('/download/:token', (req, res) => {
   const filePath = path.join(compressedDir, info.compressed[level].name);
   if (!fs.existsSync(filePath)) return res.status(404).json({ error: 'File expired or missing.' });
 
-  // Build a clean download filename
+
+
+  // file name building
   const dlName = `compressed-${info.originalName}`.replace(/[^a-zA-Z0-9._-]/g, '_');
 
-  // Force browser to download — never navigate
+  
+
   res.setHeader('Content-Type', 'application/octet-stream');
   res.setHeader('Content-Disposition', `attachment; filename="${dlName}"`);
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -119,7 +126,8 @@ router.get('/download/:token', (req, res) => {
   });
 });
 
-/* ── Helper ──────────────────────────────────────────────────────────────── */
+
+
 function runGS(cmd, args) {
   return new Promise((resolve, reject) => {
     execFile(cmd, args, { timeout: 120_000 }, (err, _out, stderr) => {

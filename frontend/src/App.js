@@ -2,8 +2,8 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './App.css';
 
 
-// the API base url — points to our express backend
-const API = '/api/pdf';
+// fetching data from the backend
+const API = process.env.NODE_ENV === 'production' ? '/api/pdf' : 'http://localhost:5000/api/pdf';
 
 // file size limit set to 100MB
 const MAX_MB = 100;
@@ -60,9 +60,6 @@ const pct = (orig, comp) => Math.max(0, ((orig - comp) / orig) * 100).toFixed(0)
 const est = (bytes, ratio) => Math.round(bytes * ratio);
 
 
-// ── SVG icon components ──────────────────────────────────────────────────────
-// these are just small inline SVGs wrapped in React components
-// so we can use them like <IconUpload /> anywhere in JSX
 
 const IconUpload = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -129,70 +126,49 @@ const IconLogo = () => (
 );
 
 
-// ── Main App component ───────────────────────────────────────────────────────
+// starting from here
 
 export default function App() {
 
-  // reads saved theme from localStorage, falls back to system preference
+//  saved data from the local storage
   const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem('compresso-theme');
+    const saved = localStorage.getItem('PDF-Generator-theme');
     return saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
-  // whenever dark changes, update the html attribute and save to localStorage
+  // theme changes
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-    localStorage.setItem('compresso-theme', dark ? 'dark' : 'light');
+    localStorage.setItem('PDF-Generator-theme', dark ? 'dark' : 'light');
   }, [dark]);
 
 
-  // which screen are we showing right now
+// using hooks
   const [view, setView] = useState(VIEW.UPLOAD);
-
-  // true when the user is dragging a file over the drop zone
   const [dragOver, setDragOver] = useState(false);
-
-  // true while the file is being sent to the backend
   const [uploading, setUploading] = useState(false);
-
-  // error message to show under the upload zone
   const [uploadErr, setUploadErr] = useState('');
-
-  // stores info about the uploaded file once upload succeeds
   const [fileInfo, setFileInfo] = useState(null);
-
-  // which compression level the user has selected
   const [level, setLevel] = useState('high');
-
-  // error message to show if compression fails
   const [compressErr, setCompressErr] = useState('');
-
-  // 0-100 number for the progress bar animation
   const [progress, setProgress] = useState(0);
-
-  // stores the result after compression finishes
   const [result, setResult] = useState(null);
-
-  // ref to the hidden file input element
   const inputRef = useRef(null);
 
 
-  // ── handleFile ─────────────────────────────────────────────────────────────
-  // called when a file is chosen via the picker or dropped onto the zone
-  // validates type and size, then POSTs it to /api/pdf/upload
-
+  // taking the file
   const handleFile = useCallback(async (file) => {
 
     setUploadErr('');
     if (!file) return;
 
-    // reject non-PDFs
+    // checking if its pdf or not
     if (file.type !== 'application/pdf') {
       setUploadErr('Only PDF files are accepted.');
       return;
     }
 
-    // reject files over 100MB
+   
     if (file.size > MAX_BYTES) {
       setUploadErr(`File exceeds ${MAX_MB}MB limit.`);
       return;
@@ -209,7 +185,7 @@ export default function App() {
 
       if (!res.ok) throw new Error(data.error || 'Upload failed.');
 
-      // save file info so we can show it on the options screen
+      // saving pdf data
       setFileInfo({ fileId: data.fileId, name: data.originalName, size: data.originalSize });
       setLevel('high');
       setView(VIEW.OPTIONS);
@@ -223,9 +199,7 @@ export default function App() {
   }, []);
 
 
-  // ── onDrop ─────────────────────────────────────────────────────────────────
-  // handles the drag-and-drop event, extracts the first file and passes it to handleFile
-
+  // picking pdf through drop
   const onDrop = useCallback((e) => {
     e.preventDefault();
     setDragOver(false);
@@ -233,10 +207,7 @@ export default function App() {
   }, [handleFile]);
 
 
-  // ── handleCompress ─────────────────────────────────────────────────────────
-  // sends the fileId and chosen level to /api/pdf/compress
-  // while waiting it runs a fake progress bar animation so the screen isn't boring
-
+//  progress bar display
   const handleCompress = async () => {
     if (!fileInfo) return;
 
@@ -244,8 +215,6 @@ export default function App() {
     setProgress(0);
     setView(VIEW.COMPRESSING);
 
-    // fake progress — ticks up randomly every 300ms until capped at 88
-    // the real jump to 100 happens after the server responds
     let p = 0;
     const tick = setInterval(() => {
       p = Math.min(p + Math.random() * 12, 88);
@@ -264,7 +233,6 @@ export default function App() {
 
       if (!res.ok) throw new Error(data.error || 'Compression failed.');
 
-      // jump bar to 100, then after a short pause show the result screen
       setProgress(100);
       setTimeout(() => {
         setResult({ compressedSize: data.compressedSize, token: data.downloadToken });
@@ -279,11 +247,7 @@ export default function App() {
   };
 
 
-  // ── handleDownload ─────────────────────────────────────────────────────────
-  // creates a hidden <a> tag and clicks it programmatically
-  // this forces the browser to download the file to the user's PC
-  // instead of navigating away or opening it in the browser
-
+// downloading the file
   const handleDownload = () => {
     if (!result) return;
 
@@ -295,14 +259,11 @@ export default function App() {
     document.body.appendChild(a);
     a.click();
 
-    // clean up the element after a short delay
     setTimeout(() => document.body.removeChild(a), 200);
   };
 
 
-  // ── reset ──────────────────────────────────────────────────────────────────
-  // clears everything and goes back to the upload screen
-
+  // return to the start
   const reset = () => {
     setView(VIEW.UPLOAD);
     setFileInfo(null);
@@ -314,27 +275,23 @@ export default function App() {
   };
 
 
-  // ── render ─────────────────────────────────────────────────────────────────
 
   return (
     <div className="app">
 
 
-      {/* HEADER — always visible at the top */}
       <header className="header">
         <div className="header-inner">
 
-          {/* logo — clicking it resets the app */}
           <a className="logo" href="/" onClick={(e) => { e.preventDefault(); reset(); }}>
             <span className="logo-icon"><IconLogo /></span>
-            <span className="logo-wordmark">Compresso</span>
+            <span className="logo-wordmark">PDF-Generator</span>
           </a>
 
           <nav className="header-nav">
             <span className="nav-tag">PDF Tools</span>
           </nav>
 
-          {/* theme toggle button */}
           <button
             className="theme-toggle"
             onClick={() => setDark(d => !d)}
@@ -349,7 +306,6 @@ export default function App() {
       </header>
 
 
-      {/* HERO BAND — only shows on the upload screen */}
       {view === VIEW.UPLOAD && (
         <div className="hero-band">
           <div className="hero-inner">
@@ -360,7 +316,6 @@ export default function App() {
               <p className="hero-sub">Drag and drop a PDF to reduce file size without losing quality.</p>
             </div>
 
-            {/* decorative illustration — hidden on mobile */}
             <div className="hero-right" aria-hidden="true">
               <div className="hero-illustration">
                 <div className="ill-doc ill-back">
@@ -383,15 +338,12 @@ export default function App() {
       )}
 
 
-      {/* MAIN — the white card area that switches between views */}
       <main className="main">
 
-
-        {/* ── VIEW 1: UPLOAD ──────────────────────────────────────────── */}
+        {/* only one upload */}
         {view === VIEW.UPLOAD && (
           <div className="card animate-in">
 
-            {/* hidden file input — triggered by clicking the drop zone or the button */}
             <input
               ref={inputRef}
               type="file"
@@ -400,7 +352,6 @@ export default function App() {
               onChange={e => handleFile(e.target.files[0])}
             />
 
-            {/* drop zone — the big dashed rectangle */}
             <div
               className={`drop-zone ${dragOver ? 'dz-active' : ''} ${uploading ? 'dz-loading' : ''}`}
               onDrop={onDrop}
@@ -434,7 +385,6 @@ export default function App() {
               )}
             </div>
 
-            {/* error message shown below the drop zone */}
             {uploadErr && (
               <div className="error-bar">
                 <span className="err-icon">⚠</span>
@@ -446,13 +396,12 @@ export default function App() {
         )}
 
 
-        {/* ── VIEW 2: OPTIONS ─────────────────────────────────────────── */}
         {view === VIEW.OPTIONS && fileInfo && (
           <div className="card animate-in">
 
             <h2 className="card-title">Compress PDF</h2>
 
-            {/* shows the uploaded file name and size */}
+            {/* display information */}
             <div className="file-row">
               <span className="file-row-pdf"><IconPDF /></span>
               <div className="file-row-info">
@@ -463,12 +412,13 @@ export default function App() {
 
             <p className="section-label">Select compression level:</p>
 
-            {/* renders the 3 compression level cards using .map() */}
+
+            {/* using mapping */}
             <div className="levels-grid">
               {LEVELS.map(lv => (
                 <label key={lv.id} className={`level-card ${level === lv.id ? 'lc-selected' : ''}`}>
 
-                  {/* hidden radio input — the label handles the click */}
+                  {/* click the radio button */}
                   <input
                     type="radio"
                     name="lvl"
@@ -478,7 +428,6 @@ export default function App() {
                     className="sr-only"
                   />
 
-                  {/* "Best compression" badge only shows on the High card */}
                   {lv.badge && <span className="lc-badge">{lv.badge}</span>}
 
                   <div className="lc-top">
@@ -493,7 +442,6 @@ export default function App() {
               ))}
             </div>
 
-            {/* compression error (e.g. ghostscript not found) */}
             {compressErr && (
               <div className="error-bar">
                 <span className="err-icon">⚠</span>
@@ -510,15 +458,14 @@ export default function App() {
         )}
 
 
-        {/* ── VIEW 3: COMPRESSING ─────────────────────────────────────── */}
         {view === VIEW.COMPRESSING && (
           <div className="card animate-in compressing-card">
 
             <div className="compress-logo"><IconLogo /></div>
-            <h2 className="compress-title">Compresso</h2>
+            <h2 className="compress-title">PDF-Generator</h2>
             <p className="compress-sub">Compressing your PDF…</p>
 
-            {/* progress bar — width is driven by the progress state (0-100) */}
+            {/* progress bar */}
             <div className="prog-track">
               <div className="prog-fill" style={{ width: `${progress}%` }} />
             </div>
@@ -530,7 +477,6 @@ export default function App() {
         )}
 
 
-        {/* ── VIEW 4: RESULT ──────────────────────────────────────────── */}
         {view === VIEW.RESULT && result && fileInfo && (
           <div className="card animate-in result-card">
 
@@ -544,7 +490,6 @@ export default function App() {
               {' '}— saved {fmt(fileInfo.size - result.compressedSize)}
             </p>
 
-            {/* side-by-side original vs compressed size boxes */}
             <div className="size-row">
 
               <div className="size-box">
@@ -572,7 +517,6 @@ export default function App() {
 
             <p className="result-filename">{fileInfo.name}</p>
 
-            {/* clicking this triggers the hidden anchor download trick */}
             <button className="btn-download" onClick={handleDownload}>
               <span className="dl-icon"><IconDownload /></span>
               Download compressed PDF
@@ -590,7 +534,7 @@ export default function App() {
 
 
       <footer className="footer">
-        <p>Compresso · Powered by Ghostscript · Files processed locally on your server</p>
+        <p>PDF-Generator · Powered by Ghostscript · Files processed locally on your server</p>
       </footer>
 
 

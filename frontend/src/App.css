@@ -1,12 +1,6 @@
-/* Compresso — pure black & white theme system
-   Light mode = white background, black text
-   Dark mode  = black background, white text
-   No colours, no gradients, no shades in between */
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 
-/* reset — zero out default browser spacing and sizing */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -34,9 +28,7 @@ a {
 }
 
 
-/* ── LIGHT THEME ────────────────────────────────────────────────────────────
-   pure white surfaces, pure black text, black borders and accents */
-
+/* Light Theme */
 :root,
 [data-theme="light"] {
 
@@ -74,9 +66,7 @@ a {
 }
 
 
-/* ── DARK THEME ─────────────────────────────────────────────────────────────
-   pure black surfaces, pure white text, white borders and accents */
-
+/* Dark There */
 [data-theme="dark"] {
 
   --bg:         #000000;
@@ -113,8 +103,6 @@ a {
 }
 
 
-/* ── APP WRAPPER ────────────────────────────────────────────────────────────
-   full page flex column so footer stays at the bottom */
 
 .app {
   background: var(--bg);
@@ -126,9 +114,7 @@ a {
 }
 
 
-/* ── HEADER ─────────────────────────────────────────────────────────────────
-   sticky top bar with logo, nav tag, and theme toggle */
-
+/* heading */
 .header {
   background: var(--surface);
   border-bottom: 2px solid var(--border);
@@ -225,8 +211,6 @@ a {
 }
 
 
-/* ── HERO BAND ──────────────────────────────────────────────────────────────
-   big black (or white in dark mode) banner at the top of the upload screen */
 
 .hero-band {
   background: var(--hero-bg);
@@ -332,8 +316,6 @@ a {
 }
 
 
-/* ── MAIN ───────────────────────────────────────────────────────────────────
-   the card area — overlaps the hero slightly on upload screen */
 
 .main {
   flex: 1;
@@ -350,8 +332,6 @@ a {
 }
 
 
-/* ── CARD ───────────────────────────────────────────────────────────────────
-   the white box that holds each view */
 
 .card {
   background: var(--surface);
@@ -372,8 +352,6 @@ a {
 }
 
 
-/* ── DROP ZONE ──────────────────────────────────────────────────────────────
-   the big dashed rectangle on the upload screen */
 
 .drop-zone {
   border: 2px dashed var(--border);
@@ -458,9 +436,7 @@ a {
 }
 
 
-/* ── ERROR BAR ──────────────────────────────────────────────────────────────
-   shown below the drop zone or options when something goes wrong */
-
+/* error showing */
 .error-bar {
   display: flex;
   align-items: center;
@@ -479,8 +455,6 @@ a {
 }
 
 
-/* ── FILE ROW ───────────────────────────────────────────────────────────────
-   shows the uploaded file name and size on the options screen */
 
 .card-title {
   font-family: 'Fraunces', Georgia, serif;
@@ -544,9 +518,7 @@ a {
 }
 
 
-/* ── LEVEL CARDS ────────────────────────────────────────────────────────────
-   the 3 compression option boxes */
-
+/* cards style */
 .levels-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -580,7 +552,7 @@ a {
   color: var(--surface);
 }
 
-/* badge — "Best compression" pill on the High card */
+
 .lc-badge {
   position: absolute;
   top: 0;
@@ -608,7 +580,7 @@ a {
   margin-bottom: 10px;
 }
 
-/* the circular radio indicator */
+/* circle at the card */
 .radio-ring {
   width: 18px;
   height: 18px;
@@ -638,8 +610,6 @@ a {
 .lc-est   { font-size: 0.76rem; color: var(--text-3); opacity: 0.6; }
 
 
-/* ── CARD ACTIONS ───────────────────────────────────────────────────────────
-   the Cancel and Compress buttons at the bottom of the options card */
 
 .card-actions {
   display: flex;
@@ -690,8 +660,6 @@ a {
 }
 
 
-/* ── COMPRESSING CARD ───────────────────────────────────────────────────────
-   the loading screen shown while ghostscript runs */
 
 .compressing-card {
   text-align: center;
@@ -725,7 +693,7 @@ a {
   margin-bottom: 28px;
 }
 
-/* the progress bar track (grey/dark background) */
+/* the percentage bar */
 .prog-track {
   height: 6px;
   background: var(--prog-track);
@@ -737,7 +705,7 @@ a {
   margin-right: auto;
 }
 
-/* the fill bar inside — width driven by progress state */
+/* var completing */
 .prog-fill {
   height: 100%;
   background: var(--prog-fill);
@@ -753,8 +721,7 @@ a {
 }
 
 
-/* ── RESULT CARD ────────────────────────────────────────────────────────────
-   shown after compression finishes */
+/* final result */
 
 .result-card {
   text-align: center;
@@ -799,7 +766,7 @@ a {
 }
 
 
-/* size comparison boxes */
+
 
 .size-row {
   display: flex;
@@ -925,9 +892,7 @@ a {
 }
 
 
-/* ── SPINNER ────────────────────────────────────────────────────────────────
-   rotating circle shown during file upload */
-
+/* the image rotating */
 .spinner {
   display: inline-block;
   border-radius: 50%;
@@ -955,8 +920,6 @@ a {
 }
 
 
-/* ── SR-ONLY ────────────────────────────────────────────────────────────────
-   hides elements visually but keeps them accessible to screen readers */
 
 .sr-only {
   position: absolute;
@@ -971,8 +934,6 @@ a {
 }
 
 
-/* ── FOOTER ─────────────────────────────────────────────────────────────────
-   small text at the very bottom */
 
 .footer {
   text-align: center;
@@ -985,8 +946,6 @@ a {
 }
 
 
-/* ── RESPONSIVE ─────────────────────────────────────────────────────────────
-   adjustments for smaller screens */
 
 @media (max-width: 640px) {
 
