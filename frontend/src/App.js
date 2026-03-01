@@ -328,7 +328,7 @@ export default function App() {
                   <div className="ill-line" />
                   <div className="ill-line short" />
                   <div className="ill-line" />
-                  <span className="ill-badge">–60%</span>
+                  <span className="ill-badge">60%</span>
                 </div>
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function App() {
               {uploading ? (
                 <div className="dz-body">
                   <div className="spinner lg" />
-                  <p className="dz-hint">Uploading…</p>
+                  <p className="dz-hint">Uploading</p>
                 </div>
               ) : (
                 <div className="dz-body">
@@ -387,7 +387,7 @@ export default function App() {
 
             {uploadErr && (
               <div className="error-bar">
-                <span className="err-icon">⚠</span>
+                <span className="err-icon">Error</span>
                 {uploadErr}
               </div>
             )}
@@ -463,7 +463,7 @@ export default function App() {
 
             <div className="compress-logo"><IconLogo /></div>
             <h2 className="compress-title">PDF-Generator</h2>
-            <p className="compress-sub">Compressing your PDF…</p>
+            <p className="compress-sub">Compressing your PDF..</p>
 
             {/* progress bar */}
             <div className="prog-track">
@@ -534,7 +534,7 @@ export default function App() {
 
 
       <footer className="footer">
-        <p>PDF-Generator · Powered by Ghostscript · Files processed locally on your server</p>
+        <p>PDF-Generator · Powered by Ghostscript · Developed by Haseeb</p>
       </footer>
 
 

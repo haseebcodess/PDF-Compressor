@@ -47,8 +47,8 @@ setInterval(() => {
 
 app.listen(PORT, () => {
   console.log(`\n  PDF-generator running at http://localhost:${PORT}`);
-  console.log(`📁  Uploads   → ${uploadsDir}`);
-  console.log(`📁  Compressed → ${compressedDir}\n`);
+  console.log(`  Uploads   → ${uploadsDir}`);
+  console.log(`  Compressed → ${compressedDir}\n`);
 });
 
 
