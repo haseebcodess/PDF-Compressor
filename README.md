@@ -75,7 +75,7 @@ npm start
 ## 🔒 Security
 
 - PDF-only (MIME type + extension checked)
-- 25MB size limit
+- 100MB size limit
 - UUID-prefixed filenames (no overwrites)
 - Sanitised download filenames
 - `Content-Disposition: attachment` prevents in-browser navigation
